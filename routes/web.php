@@ -1,14 +1,20 @@
 <?php
 
+use App\Exports\BarangKeluarExport;
+use App\Exports\BarangMasukExport;
+use App\Exports\TotalStockBarangExport;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Kelola_BarangKeluarController;
 use App\Http\Controllers\Kelola_BarangMasukController;
 use App\Http\Controllers\Kelola_JenisBarangController;
 use App\Http\Controllers\Kelola_KategoriController;
 use App\Http\Controllers\Kelola_PenggunaController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\Manajemen_BarangController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -19,6 +25,18 @@ Route::get('/cek-barang/{kode_transaksi}', [DashboardController::class, 'cek_bar
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('checkrole:0,1')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/Laporan',[LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/total-stok/export', function (Request $request) {
+            return Excel::download(new TotalStockBarangExport($request->tgl_awal, $request->tgl_akhir), 'laporan_total_stok_barang.xlsx');
+        })->name('laporan.totalstok.export');
+
+        Route::get('/laporan/Barang-Masuk/export', function (Request $request) {
+            return Excel::download(new BarangMasukExport($request->tgl_awal, $request->tgl_akhir), 'laporan_Barang_Masuk.xlsx');
+        })->name('laporan.BarangMasuk.export');
+
+        Route::get('/laporan/Barang_Keluar/export', function (Request $request) {
+            return Excel::download(new BarangKeluarExport($request->tgl_awal, $request->tgl_akhir), 'laporan_Barang_Keluar.xlsx');
+        })->name('laporan.BarangKeluar.export');
 
         Route::get('/Manajemen_Barang',[Manajemen_BarangController::class, 'index'])->name('Manajemen_Barang.index');
         Route::post('/Manajemen_Barang',[Manajemen_BarangController::class, 'store'])->name('Manajemen_Barang.store');

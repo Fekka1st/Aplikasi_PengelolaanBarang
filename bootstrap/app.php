@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
             'checkrole' => App\Http\Middleware\Checkrole::class,
+            'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

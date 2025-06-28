@@ -27,8 +27,6 @@ class barang extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-
-
     public function barangmasuk()
     {
         return $this->hasMany(barang_masuk::class, 'barang_id');

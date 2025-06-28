@@ -37,6 +37,12 @@
                         <p>Kelola Barang Keluar</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('laporan.index')}}" class="nav-link {{ request()->is('Laporan*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-box"></i>
+                        <p>Laporan</p>
+                    </a>
+                </li>
 
                 @if(Auth::user()->role == 1)
                 {{-- Admin --}}
